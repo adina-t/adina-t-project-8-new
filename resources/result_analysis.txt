@@ -1,0 +1,20 @@
+Analysis on the result:
+
+Overall Trend:
+    - At the beginning of each line, the line tends to go down a little bit, where each meet the minimum
+      when the recursion limit is around 18, close to the "15" that we see in the modules.
+
+    - The run time of smaller arrays doesn't get affected as much when the recursion limit increases.
+      And as the array size increases, the slope gets steeper.
+
+    - Since there are many factors affecting each run of our cases, there are noises in our graph that make
+      the lines not smooth.
+
+Zoom-in part:
+    - From array sizes 1000,000 and onwards, there are obvious concaves down at recursion limit = 18,
+      so that incidates the optimal value of recursion limit for array those sizes.
+
+    - For array sizes from 40,000 to 70,000, there's an interesting concave downwards at recursion limit = 12.
+      Since every test case were repeated only four times, it may be a conincidence that these array sizes turned
+      out to have a lower run time at limit = 12, or that all run times at limit = 14 just so happened to be a
+      little higher that cause the difference visually

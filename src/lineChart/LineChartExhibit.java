@@ -6,13 +6,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.util.Scanner;
 
 /**
- * An object of LineChartExhibit creates
+ * An object of LineChartExhibit creates line charts by reading in (pseudo-) CSV file and
+ * populate the line.
+ *
+ * @author Adina T.
  */
 public class LineChartExhibit extends Application {
 
@@ -57,16 +63,67 @@ public class LineChartExhibit extends Application {
         System.err.flush();
 
         // read the output file and create the line on the chart
-        RecursionInspect.drawLineFromCSV(file, lineChart);
-        System.out.println("drawn");
+        Scanner input = null;
+        try
+        {
+            input = new Scanner(file);
+            drawLineFromCSV(input, lineChart);
+            System.out.println("drawn");
+        }
+        catch(FileNotFoundException e) {}
 
-        Scene scene  = new Scene(lineChart,800,600);
+        input.close();
+        Scene scene = new Scene(lineChart,800,600);
         stage.setScene(scene);
 
         // make the stage visible
         stage.show();
 
     }
+
+    /**
+     * Represent the data as line in a line chart based on the data passed.
+     * @param input the file with the data pairs
+     * @param lineChart the chart to draw on
+     */
+    public static void drawLineFromCSV(Scanner input, LineChart<Number, Number> lineChart)
+    {
+        if(input == null)
+            return;
+
+        //defining a series and a pair
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        XYChart.Data<Number, Number> dataPair;
+
+
+        // Text file format
+        // size: [array size]
+        // [ x1 ] [ y1 ]                          x: recursion limit, y: time used
+        // [ x2 ] [ y2 ]
+        // ...
+        int line = 0;
+        if(input.hasNextLine())
+        {
+            String[] header = input.nextLine().split(",");
+            series.setName(header[1]);
+        }
+
+        while(input.hasNextLine())
+        {
+            line++;
+            String[] tokens = input.nextLine().split(",");
+
+            // parse the int values and add them as pairs
+            int xVal = Integer.parseInt(tokens[0]);
+            int yVal = Integer.parseInt(tokens[1]);
+            dataPair = new XYChart.Data<>(xVal, yVal);
+            series.getData().add(dataPair);
+
+        }
+
+        lineChart.getData().add(series);
+    }
+
 
     /**
      * Launch the javafx application.

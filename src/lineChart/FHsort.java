@@ -1,8 +1,10 @@
 package lineChart;
 
 /**
+ * This class provides static sorting method, such as quicksort and insertion sort
+ * and their helper methods.
  *
- * @author Bita M., Adina Tung
+ * @author Bita M., Adina T.
  */
 public class FHsort
 {

@@ -1,18 +1,14 @@
 package lineChart;
 
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * An object of class RecursionInspect tests the run time associated with various array sizes and
  * recursion limits. The data will the be write to a text file in the format of [limit, run-time]
+ *
+ * @author Adina T.
  */
 public class RecursionInspect
 {
@@ -49,8 +45,6 @@ public class RecursionInspect
                 outputFile.write(dataPairs[i][0] + ","
                         + dataPairs[i][1] + "\n");
 
-            // closing writer connection
-
         }
         catch (IOException e) {
             // Auto-generated catch block
@@ -58,70 +52,12 @@ public class RecursionInspect
         }
     }
 
-    /**
-     * Represent the data as line in a line chart based on the sata passed.
-     * @param inputFile the file with the data pairs
-     * @param lineChart the chart to draw on
-     */
-    public static void drawLineFromCSV(File inputFile, LineChart<Number, Number> lineChart)
-    {
-        if(inputFile == null)
-            return;
 
-        //defining a series and a pair
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        XYChart.Data<Number, Number> dataPair;
-        Scanner input = null;
-
-        try
-        {
-            input = new Scanner(inputFile);
-        }
-        catch(FileNotFoundException e)
-        {
-
-        }
-
-        // Text file format
-        // size: [array size]
-        // [ x1 ] [ y1 ]                          x: recursion limit, y: time used
-        // [ x2 ] [ y2 ]
-        // ...
-        // size: [array size]
-        // [ x1 ] [ y1 ]
-        // [ x2 ] [ y2 ]
-        // ...
-        while(input.hasNextLine())
-        {
-            String[] tokens = input.nextLine().split(",");
-
-            if(tokens[0].contains("size")) //[size: ] [size of array]
-            {
-                // if series is not emptry,
-                // add the series to the chart first
-                if( !series.getData().isEmpty())
-                    lineChart.getData().add(series);
-
-                series = new XYChart.Series<>();
-                series.setName(tokens[1]);
-            }
-            // if the line contains xy-pairs
-            else
-            {
-                // parse the int values and add them as pairs
-                int xVal = Integer.parseInt(tokens[0]);
-                int yVal = Integer.parseInt(tokens[1]);
-                dataPair = new XYChart.Data<>(xVal, yVal);
-                series.getData().add(dataPair);
-            }
-
-        }
-    }
 
     // constants for testing quicksort with various cases
     final static int RECUR_LIM_MIN = 2;
     final static int RECUR_LIM_MAX = 300;
-    final static int ARRAY_SIZE = 8000000;
+    final static int ARRAY_SIZE = 100000;
     final static int TEST_CYCLES = 4;  //times to test quicksort to avoid outliers
 
     /**
